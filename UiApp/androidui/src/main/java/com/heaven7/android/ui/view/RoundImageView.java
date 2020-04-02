@@ -3,7 +3,6 @@ package com.heaven7.android.ui.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -12,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.heaven7.android.ui.round.RoundHelper;
-import com.heaven7.android.ui.round.RoundParameters;
 
 /**
  * the round image view. which can use round parameter to set
@@ -31,6 +29,10 @@ public class RoundImageView extends AppCompatImageView implements RoundHelper.Ca
         super(context, attrs, defStyleAttr);
         mHelper.setRoundParameters(RoundHelper.of(context, attrs, null));
         mHelper.apply();
+    }
+
+    public RoundHelper getRoundHelper() {
+        return mHelper;
     }
 
     @Override
@@ -56,6 +58,7 @@ public class RoundImageView extends AppCompatImageView implements RoundHelper.Ca
     protected Parcelable onSaveInstanceState() {
         return mHelper.onSaveInstanceState(super.onSaveInstanceState());
     }
+
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         super.onRestoreInstanceState(mHelper.onRestoreInstanceState(state));

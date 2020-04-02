@@ -31,6 +31,10 @@ public class RoundLinearLayout extends LinearLayout implements RoundHelper.Callb
         mHelper.apply();
     }
 
+    public RoundHelper getRoundHelper() {
+        return mHelper;
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
