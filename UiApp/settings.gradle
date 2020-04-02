@@ -1,0 +1,3 @@
+rootProject.name='UiApp'
+include ':app'
+include ':androidui'
