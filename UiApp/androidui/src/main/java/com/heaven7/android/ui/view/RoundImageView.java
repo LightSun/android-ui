@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.heaven7.android.ui.round.RoundHelper;
+import com.heaven7.android.ui.round.RoundPartDelegate;
 
 /**
  * the round image view. which can use round parameter to set
@@ -49,7 +50,7 @@ public class RoundImageView extends AppCompatImageView implements RoundHelper.Ca
 
     @SuppressLint("WrongCall")
     @Override
-    public void draw0(View view, Canvas canvas) {
+    public void draw0(RoundPartDelegate delegate, Canvas canvas) {
         super.draw(canvas);
     }
 

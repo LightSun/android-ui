@@ -1,6 +1,7 @@
 package com.heaven7.android.ui.round;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -11,6 +12,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+
+import androidx.annotation.Nullable;
 
 /**
  * the round helper. help fast set round parameters
@@ -25,14 +28,31 @@ public final class RoundHelper {
     private Paint mPaint;
 
     private final View mView;
+    private final RoundPartDelegate mPartDelegate;
     private final Callback mCallback;
     private boolean mDirty;
 
     private RoundParameters mParams;
 
-    public RoundHelper(View view, Callback callback) {
+    /**
+     * create round helper by target round-part
+     * @param view the view
+     * @param delegate the round-part
+     * @param callback the callback to draw. can be null.
+     * @since 1.0.2
+     */
+    public RoundHelper(View view, RoundPartDelegate delegate, @Nullable Callback callback) {
         this.mView = view;
+        this.mPartDelegate = delegate;
         this.mCallback = callback;
+    }
+    /**
+     * create round helper by default view round-part
+     * @param view the view
+     * @param callback the callback to draw. can be null.
+     */
+    public RoundHelper(View view, @Nullable Callback callback) {
+       this(view, new ViewRoundPartDelegate(view), callback);
     }
     /**
      * get the round parameters from known attrs. order is 'attrs -> theme'
@@ -45,6 +65,30 @@ public final class RoundHelper {
         return Utils.of(context, attrs, dp);
     }
 
+    /**
+     * get view
+     * @return view
+     * @since 1.0.2
+     */
+    public View getView(){
+        return mView;
+    }
+    /**
+     * get Context
+     * @return Context
+     * @since 1.0.2
+     */
+    public Context getContext(){
+        return mView.getContext();
+    }
+    /**
+     * get Resources
+     * @return Resources
+     * @since 1.0.2
+     */
+    public Resources getResource(){
+        return mView.getResources();
+    }
     public RoundParameters getRoundParameters() {
         return mParams;
     }
@@ -53,6 +97,7 @@ public final class RoundHelper {
     }
     /**
      * called on apply round parameters. this can called in layout or measure.
+     * call this will add a OnPreDrawListener for view tree.
      */
     public void apply(){
         if(mDirty || mParams == null){
@@ -65,7 +110,7 @@ public final class RoundHelper {
                 mView.getViewTreeObserver().removeOnPreDrawListener(this);
                 if(mDirty){
                     mDirty = false;
-                    apply0(mView.getWidth(), mView.getHeight());
+                    apply0(mPartDelegate.getWidth(), mPartDelegate.getHeight());
                 }
                 return true;
             }
@@ -76,7 +121,7 @@ public final class RoundHelper {
      * apply direct without on pre-draw listener
      */
     public void applyDirect(){
-        apply0(mView.getWidth(), mView.getHeight());
+        apply0(mPartDelegate.getWidth(), mPartDelegate.getHeight());
     }
 
     /**
@@ -105,25 +150,25 @@ public final class RoundHelper {
         if(mParams != null){
             if(mParams.hasBorder()){
                 mPaint.setColor(mParams.getBorderColor());
-                canvas.save();
+               // canvas.save();
                 canvas.drawRoundRect(mRect,  getRadius(true), getRadius(false), mPaint);
-                canvas.restore();
+               // canvas.restore();
             }
 
             int save = canvas.save();
             canvas.clipPath(this.mPath);
-            callback.draw0(mView, canvas);
+            callback.draw0(mPartDelegate, canvas);
             canvas.restoreToCount(save);
         }else {
-            callback.draw0(mView, canvas);
+            callback.draw0(mPartDelegate, canvas);
         }
     }
 
     private float getRadius(boolean x){
         if(x){
-            return mParams.isCircle() ? mView.getWidth()*1f / 2 : mParams.getRadiusX();
+            return mParams.isCircle() ? mPartDelegate.getWidth()*1f / 2 : mParams.getRadiusX();
         }else {
-            return mParams.isCircle() ? mView.getHeight()*1f / 2 : mParams.getRadiusY();
+            return mParams.isCircle() ? mPartDelegate.getHeight()*1f / 2 : mParams.getRadiusY();
         }
     }
 
@@ -132,10 +177,10 @@ public final class RoundHelper {
             return;
         }
         Log.d(TAG, "apply0:  w = " + w + ", h = " + h);
-        int padLeft = mView.getPaddingLeft();
-        int padTop = mView.getPaddingTop();
-        int padRight = mView.getPaddingRight();
-        int padBottom = mView.getPaddingBottom();
+        int padLeft = mPartDelegate.getPaddingLeft();
+        int padTop = mPartDelegate.getPaddingTop();
+        int padRight = mPartDelegate.getPaddingRight();
+        int padBottom = mPartDelegate.getPaddingBottom();
         //
         mPath.reset();
         if(mParams.isRoundAfterPadding()){
@@ -188,7 +233,15 @@ public final class RoundHelper {
         return b.getParcelable("super");
     }
 
+    /**
+     * the callback
+     */
     public interface Callback{
-        void draw0(View view, Canvas canvas);
+        /**
+         * called on draw round-part
+         * @param delegate the round part delegate
+         * @param canvas the canvas to draw
+         */
+        void draw0(RoundPartDelegate delegate, Canvas canvas);
     }
 }
