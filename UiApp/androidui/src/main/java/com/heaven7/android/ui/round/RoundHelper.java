@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 
 /**
  * the round helper. help fast set round parameters
+ * <p>Note: currently not compat with 'android:clipchildren'.</p>
  * @author heaven7
  */
 public final class RoundHelper {
