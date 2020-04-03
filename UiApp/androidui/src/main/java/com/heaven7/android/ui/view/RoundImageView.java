@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;

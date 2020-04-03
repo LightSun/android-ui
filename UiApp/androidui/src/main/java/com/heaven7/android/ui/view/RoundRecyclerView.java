@@ -5,29 +5,33 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.heaven7.android.ui.round.RoundHelper;
 import com.heaven7.android.ui.round.RoundPartDelegate;
 
 /**
- * the round relative-layout
+ * round recycler view
  * @author heaven7
+ * @since 1.0.3
  */
-public class RoundLinearLayout extends LinearLayout implements RoundHelper.Callback {
+public class RoundRecyclerView extends RecyclerView implements RoundHelper.Callback {
 
     private final RoundHelper mHelper = new RoundHelper(this, this);
 
-    public RoundLinearLayout(Context context, @Nullable AttributeSet attrs) {
+    public RoundRecyclerView(@NonNull Context context) {
+        this(context, null);
+    }
+
+    public RoundRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public RoundLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public RoundRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
         mHelper.setRoundParameters(RoundHelper.of(context, attrs, null));
         mHelper.apply();
     }
@@ -54,7 +58,7 @@ public class RoundLinearLayout extends LinearLayout implements RoundHelper.Callb
     }
     @Override
     public void draw0(RoundPartDelegate delegate,Canvas canvas) {
-        RoundLinearLayout.super.draw(canvas);
+        RoundRecyclerView.super.draw(canvas);
     }
     @Nullable
     @Override
@@ -68,7 +72,7 @@ public class RoundLinearLayout extends LinearLayout implements RoundHelper.Callb
     private final RoundHelper.Callback mDispatch = new RoundHelper.Callback() {
         @Override
         public void draw0(RoundPartDelegate delegate, Canvas canvas) {
-            RoundLinearLayout.super.dispatchDraw(canvas);
+            RoundRecyclerView.super.dispatchDraw(canvas);
         }
     };
 }

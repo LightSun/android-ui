@@ -5,29 +5,29 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.heaven7.android.ui.round.RoundHelper;
 import com.heaven7.android.ui.round.RoundPartDelegate;
 
 /**
- * the round relative-layout
+ * the round text view. which can use round parameter to set
+ *
  * @author heaven7
+ * @since 1.0.3
  */
-public class RoundLinearLayout extends LinearLayout implements RoundHelper.Callback {
+public class RoundTextView extends AppCompatTextView implements RoundHelper.Callback {
 
     private final RoundHelper mHelper = new RoundHelper(this, this);
 
-    public RoundLinearLayout(Context context, @Nullable AttributeSet attrs) {
+    public RoundTextView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public RoundLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public RoundTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
         mHelper.setRoundParameters(RoundHelper.of(context, attrs, null));
         mHelper.apply();
     }
@@ -48,27 +48,19 @@ public class RoundLinearLayout extends LinearLayout implements RoundHelper.Callb
         mHelper.draw(canvas);
     }
 
+    @SuppressLint("WrongCall")
     @Override
-    protected void dispatchDraw(Canvas canvas) {
-        mHelper.draw(canvas, mDispatch);
+    public void draw0(RoundPartDelegate delegate, Canvas canvas) {
+        super.draw(canvas);
     }
-    @Override
-    public void draw0(RoundPartDelegate delegate,Canvas canvas) {
-        RoundLinearLayout.super.draw(canvas);
-    }
+
     @Nullable
     @Override
-    protected Parcelable onSaveInstanceState() {
+    public Parcelable onSaveInstanceState() {
         return mHelper.onSaveInstanceState(super.onSaveInstanceState());
     }
     @Override
-    protected void onRestoreInstanceState(Parcelable state) {
+    public void onRestoreInstanceState(Parcelable state) {
         super.onRestoreInstanceState(mHelper.onRestoreInstanceState(state));
     }
-    private final RoundHelper.Callback mDispatch = new RoundHelper.Callback() {
-        @Override
-        public void draw0(RoundPartDelegate delegate, Canvas canvas) {
-            RoundLinearLayout.super.dispatchDraw(canvas);
-        }
-    };
 }

@@ -5,8 +5,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 
@@ -16,16 +15,17 @@ import com.heaven7.android.ui.round.RoundPartDelegate;
 /**
  * the round relative-layout
  * @author heaven7
+ * @since 1.0.3
  */
-public class RoundLinearLayout extends LinearLayout implements RoundHelper.Callback {
+public class RoundRelativeLayout extends RelativeLayout implements RoundHelper.Callback {
 
     private final RoundHelper mHelper = new RoundHelper(this, this);
 
-    public RoundLinearLayout(Context context, @Nullable AttributeSet attrs) {
+    public RoundRelativeLayout(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public RoundLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public RoundRelativeLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         mHelper.setRoundParameters(RoundHelper.of(context, attrs, null));
@@ -54,7 +54,7 @@ public class RoundLinearLayout extends LinearLayout implements RoundHelper.Callb
     }
     @Override
     public void draw0(RoundPartDelegate delegate,Canvas canvas) {
-        RoundLinearLayout.super.draw(canvas);
+        RoundRelativeLayout.super.draw(canvas);
     }
     @Nullable
     @Override
@@ -68,7 +68,7 @@ public class RoundLinearLayout extends LinearLayout implements RoundHelper.Callb
     private final RoundHelper.Callback mDispatch = new RoundHelper.Callback() {
         @Override
         public void draw0(RoundPartDelegate delegate, Canvas canvas) {
-            RoundLinearLayout.super.dispatchDraw(canvas);
+            RoundRelativeLayout.super.dispatchDraw(canvas);
         }
     };
 }
