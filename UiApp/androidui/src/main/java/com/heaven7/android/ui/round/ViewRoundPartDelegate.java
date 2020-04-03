@@ -32,7 +32,7 @@ public class ViewRoundPartDelegate implements RoundPartDelegate {
 
     @Override
     public int getPaddingRight() {
-        return view.getPaddingStart();
+        return view.getPaddingRight();
     }
 
     @Override
