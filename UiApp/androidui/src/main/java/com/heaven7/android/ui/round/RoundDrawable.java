@@ -184,8 +184,7 @@ public class RoundDrawable extends Drawable implements RoundAttacher, Drawable.C
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean canApplyTheme() {
-        return (mRoundHelper != null && mRoundHelper.getRoundParameters() !=null)
-                || (mDrawable != null && mDrawable.canApplyTheme());
+        return (mRoundHelper != null) || (mDrawable != null && mDrawable.canApplyTheme());
     }
     @Override
     public int getAlpha() {
@@ -423,6 +422,10 @@ public class RoundDrawable extends Drawable implements RoundAttacher, Drawable.C
         @Override
         public int getChangingConfigurations() {
             return 0;
+        }
+        @Override
+        public boolean canApplyTheme() {
+            return mRoundHelper != null;
         }
     }
 

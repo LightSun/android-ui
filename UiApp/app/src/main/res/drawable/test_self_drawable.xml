@@ -8,6 +8,11 @@
     app:lib_ui_round_border_color="@color/colorPrimary"
     app:lib_ui_round_circle="true"
     >
-    <!-- api 24 -->
+    <!-- api 24
+    have nothing effect in here why ?
+       app:lib_ui_round_border="10dp"
+    app:lib_ui_round_border_color="@color/colorPrimary"
+    app:lib_ui_round_circle="true"
+    -->
 
 </drawable>
