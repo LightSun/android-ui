@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<drawable xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    class="com.heaven7.android.ui.round.RoundDrawable"
+    app:lib_ui_base_drawable="@drawable/file_ic_detail_excel"
+    app:lib_ui_round="50dp"
+    app:lib_ui_round_border="10dp"
+    app:lib_ui_round_border_color="@color/colorPrimary"
+    app:lib_ui_round_circle="true"
+    >
+    <!-- api 24 -->
+
+</drawable>

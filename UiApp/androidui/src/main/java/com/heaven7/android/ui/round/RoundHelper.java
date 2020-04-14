@@ -76,11 +76,11 @@ public final class RoundHelper {
     /**
      * get the round parameters from known attrs. order is 'attrs -> theme'
      * @param context the context
-     * @param attrs the attrs
+     * @param attrs the attrs. can be null
      * @param dp the default parameters , can be null.
      * @return the round parameters. may be null if no attr-value define in theme or attrs And dp is null.
      */
-    public static RoundParameters of(Context context, AttributeSet attrs, RoundParameters dp){
+    public static RoundParameters of(Context context, @Nullable AttributeSet attrs, RoundParameters dp){
         return Utils.of(context, attrs, dp);
     }
 
@@ -262,22 +262,14 @@ public final class RoundHelper {
         apply();
         return b.getParcelable("super");
     }
-
-    public int getAlpha() {
-        initBorderPaintIfNeed();
-        return mPaint.getAlpha();
-    }
-
     public void setAlpha(int alpha) {
         initBorderPaintIfNeed();
         mPaint.setAlpha(alpha);
     }
-
     public void setColorFilter(ColorFilter filter) {
         initBorderPaintIfNeed();
         mPaint.setColorFilter(filter);
     }
-
     /**
      * the callback
      */

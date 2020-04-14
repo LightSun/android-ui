@@ -2,6 +2,7 @@ package com.heaven7.android.layout.uiapp;
 
 import com.heaven7.android.layout.uiapp.sample.TestRoundActivity;
 import com.heaven7.android.layout.uiapp.sample.TestRoundActivity2;
+import com.heaven7.android.layout.uiapp.sample.TestRoundDrawableActivity;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class TestMainActivity extends AbsMainActivity {
     protected void addDemos(List<ActivityInfo> list) {
         list.add(new ActivityInfo(TestRoundActivity.class, "TestRoundActivity"));
         list.add(new ActivityInfo(TestRoundActivity2.class, "TestRoundActivity2"));
+        list.add(new ActivityInfo(TestRoundDrawableActivity.class, "TestRoundDrawableActivity"));
     }
 }
 

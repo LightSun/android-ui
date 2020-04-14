@@ -31,28 +31,30 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 
-import static androidx.core.content.res.TypedArrayUtils.obtainAttributes;
+import static com.heaven7.android.ui.round.Utils.obtainAttributes;
 
-public class RoundDrawable extends Drawable implements RoundAttacher,Drawable.Callback {
+/**
+ * the round drawable.
+ */
+//TODO use RoundDrawable in xml .test failed .currently only round applied.
+public class RoundDrawable extends Drawable implements RoundAttacher, Drawable.Callback {
 
-    private Drawable mTarget;
+    private Drawable mDrawable;
     private RoundHelper mRoundHelper;
     private State mState;
 
     public RoundDrawable(){}
+
     private RoundDrawable(Drawable base, RoundHelper mRoundHelper){
-        this.mTarget = base;
+        this.mDrawable = base;
         this.mRoundHelper = mRoundHelper;
     }
 
-    public void initialize(Resources res, Drawable base){
-        this.mTarget = base;
-        this.mRoundHelper = new RoundHelper(res, new DrawablePartDelegate(this), new RoundHelper.Callback() {
-            @Override
-            public void draw0(RoundPartDelegate delegate, Canvas canvas) {
-                mTarget.draw(canvas);
-            }
-        });
+    public static RoundDrawable create(Context context, Drawable base){
+        RoundDrawable rd = new RoundDrawable();
+        rd.setUpRoundHelper(context.getResources());
+        rd.setDrawable(base);
+        return rd;
     }
 
     public void applyRound(){
@@ -60,8 +62,37 @@ public class RoundDrawable extends Drawable implements RoundAttacher,Drawable.Ca
             mRoundHelper.applyDirect();
         }
     }
+    private void setUpRoundHelper(Resources res){
+        this.mRoundHelper = new RoundHelper(res, new DrawablePartDelegate(this), new RoundHelper.Callback() {
+            @Override
+            public void draw0(RoundPartDelegate delegate, Canvas canvas) {
+                mDrawable.draw(canvas);
+            }
+        });
+        applyRound();
+    }
+    public void setDrawable(Drawable dr) {
+        if (mDrawable != null) {
+            mDrawable.setCallback(null);
+        }
+        mDrawable = dr;
+        if (dr != null) {
+            dr.setCallback(this);
+
+            // Only call setters for data that's stored in the base Drawable.
+            dr.setVisible(isVisible(), true);
+            dr.setState(getState());
+            dr.setLevel(getLevel());
+            dr.setBounds(getBounds());
+            if(Build.VERSION.SDK_INT >= 23){
+                dr.setLayoutDirection(getLayoutDirection());
+            }
+        }
+       // applyRound();
+        invalidateSelf();
+    }
     public Drawable getDrawable() {
-        return mTarget;
+        return mDrawable;
     }
     @Override
     public RoundHelper getRoundHelper() {
@@ -75,10 +106,10 @@ public class RoundDrawable extends Drawable implements RoundAttacher,Drawable.Ca
     }
     @Override
     public void setAlpha(int alpha) {
-        if(mTarget != null && mRoundHelper != null){
-            int old = mTarget.getAlpha();
+        if(mDrawable != null && mRoundHelper != null){
+            int old = mDrawable.getAlpha();
             if(old != alpha){
-                mTarget.setAlpha(alpha);
+                mDrawable.setAlpha(alpha);
                 mRoundHelper.setAlpha(alpha);
                 invalidateSelf();
             }
@@ -87,8 +118,8 @@ public class RoundDrawable extends Drawable implements RoundAttacher,Drawable.Ca
 
     @Override
     public void setColorFilter(@Nullable ColorFilter colorFilter) {
-        if(mTarget != null && mRoundHelper != null){
-            mTarget.setColorFilter(colorFilter);
+        if(mDrawable != null && mRoundHelper != null){
+            mDrawable.setColorFilter(colorFilter);
             mRoundHelper.setColorFilter(colorFilter);
             invalidateSelf();
         }
@@ -96,132 +127,131 @@ public class RoundDrawable extends Drawable implements RoundAttacher,Drawable.Ca
 
     @Override
     public int getOpacity() {
-        return mTarget != null ? mTarget.getOpacity() : PixelFormat.OPAQUE;
+        return mDrawable != null ? mDrawable.getOpacity() : PixelFormat.OPAQUE;
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @NonNull
     @Override
     public Rect getDirtyBounds() {
-        return mTarget != null ? mTarget.getDirtyBounds() : super.getDirtyBounds();
+        return mDrawable != null ? mDrawable.getDirtyBounds() : super.getDirtyBounds();
     }
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public int getLayoutDirection() {
-        return mTarget != null ? mTarget.getLayoutDirection() : View.LAYOUT_DIRECTION_LTR;
+        return mDrawable != null ? mDrawable.getLayoutDirection() : View.LAYOUT_DIRECTION_LTR;
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void getOutline(@NonNull Outline outline) {
-        if(mTarget != null){
-            mTarget.getOutline(outline);
+        if(mDrawable != null){
+            mDrawable.getOutline(outline);
         }else {
             super.getOutline(outline);
         }
     }
-    @Override
-    public boolean setState(@NonNull int[] stateSet) {
-        return super.setState(stateSet) || (mTarget != null && mTarget.setState(stateSet));
-    }
-    @Override
-    public void jumpToCurrentState() {
-        mTarget.jumpToCurrentState();
-    }
     @NonNull
     @Override
     public Drawable mutate() {
-        if(mRoundHelper != null && mTarget != null){
+        if(mRoundHelper != null && mDrawable != null){
             RoundDrawable rd = new RoundDrawable();
-            rd.initialize(mRoundHelper.getResource(), mTarget.mutate());
+            rd.setUpRoundHelper(mRoundHelper.getResource());
+            rd.setDrawable(mDrawable.mutate());
             //copy round params
             if(mRoundHelper.getRoundParameters() != null){
                 rd.mRoundHelper.setRoundParameters(new RoundParameters(mRoundHelper.getRoundParameters()));
+                rd.applyRound();
             }
-            rd.applyRound();
             return rd;
         }
         return this;
     }
     @Override
     public boolean setVisible(boolean visible, boolean restart) {
-        return super.setVisible(visible, restart) || (mTarget != null && mTarget.setVisible(visible, restart));
+        final boolean superChanged = super.setVisible(visible, restart);
+        final boolean changed = mDrawable != null && mDrawable.setVisible(visible, restart);
+        return superChanged | changed;
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void applyTheme(@NonNull Resources.Theme t) {
-        if (mTarget != null && mTarget.canApplyTheme()) {
-            mTarget.applyTheme(t);
+        if (mDrawable != null && mDrawable.canApplyTheme()) {
+            mDrawable.applyTheme(t);
         }
         if(mRoundHelper != null){
-            mRoundHelper.setRoundParameters(Utils.applyTheme(t, mRoundHelper.getRoundParameters()));
+            Utils.applyTheme(t, mRoundHelper.getRoundParameters());
         }
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean canApplyTheme() {
         return (mRoundHelper != null && mRoundHelper.getRoundParameters() !=null)
-                || (mTarget != null && mTarget.canApplyTheme());
+                || (mDrawable != null && mDrawable.canApplyTheme());
     }
     @Override
     public int getAlpha() {
-        return mTarget != null ? mTarget.getAlpha() : super.getAlpha();
+        return mDrawable != null ? mDrawable.getAlpha() : super.getAlpha();
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public ColorFilter getColorFilter() {
-        return mTarget != null ? mTarget.getColorFilter() : null;
+        return mDrawable != null ? mDrawable.getColorFilter() : null;
     }
     @Nullable
     @Override
     public ConstantState getConstantState() {
-        if(mTarget == null){
+        if(mDrawable == null){
             return null;
         }
         if(mState == null){
-            mState = new State(mTarget, mRoundHelper);
+            mState = new State(mDrawable, mRoundHelper);
         }
         return mState;
     }
     @Override
     public int getIntrinsicWidth() {
-        return mTarget != null ? mTarget.getIntrinsicWidth() : -1;
+        return mDrawable != null ? mDrawable.getIntrinsicWidth() : -1;
     }
     @Override
     public int getIntrinsicHeight() {
-        return mTarget != null ? mTarget.getIntrinsicHeight() : -1;
+        return mDrawable != null ? mDrawable.getIntrinsicHeight() : -1;
     }
     @NonNull
     @Override
     public Insets getOpticalInsets() {
-        return mTarget != null ? mTarget.getOpticalInsets() : super.getOpticalInsets();
+        if(mDrawable != null && Build.VERSION.SDK_INT >= 29){
+            return mDrawable.getOpticalInsets();
+        }
+        return super.getOpticalInsets();
     }
 
     @Override
     public boolean getPadding(@NonNull Rect padding) {
-        return mTarget != null ? mTarget.getPadding(padding) : super.getPadding(padding);
+        return mDrawable != null ? mDrawable.getPadding(padding) : super.getPadding(padding);
     }
     @Nullable
     @Override
     public Region getTransparentRegion() {
-        return mTarget != null ? mTarget.getTransparentRegion() : null;
+        return mDrawable != null ? mDrawable.getTransparentRegion() : null;
     }
 
     //====================
-
-    @Override
-    public void inflate(@NonNull Resources r, @NonNull XmlPullParser parser, @NonNull AttributeSet attrs)
-            throws IOException, XmlPullParserException {
-        super.inflate(r, parser, attrs);
-    }
-
     @Override
     public void inflate(@NonNull Resources r, @NonNull XmlPullParser parser, @NonNull AttributeSet attrs,
                         @Nullable Resources.Theme theme) throws IOException, XmlPullParserException {
         super.inflate(r, parser, attrs, theme);
+        //set up round
+        RoundParameters rp = new RoundParameters();
+        setUpRoundHelper(r);
+        Utils.applyTheme(r, theme, attrs, rp);
+        if(rp.isValid()){
+            mRoundHelper.setRoundParameters(rp);
+            mRoundHelper.applyDirect();
+        }
+        //setup drawable
         final TypedArray a = obtainAttributes(r, theme, attrs, R.styleable.RoundDrawable);
         try {
-           a.getDrawable(R.styleable.RoundDrawable_drawable);
-           //TODO
+           setDrawable(a.getDrawable(R.styleable.RoundDrawable_lib_ui_base_drawable));
         }finally {
             a.recycle();
         }
@@ -230,40 +260,43 @@ public class RoundDrawable extends Drawable implements RoundAttacher,Drawable.Ca
     //===================
     @Override
     public boolean isAutoMirrored() {
-        return mTarget != null && mTarget.isAutoMirrored();
+        return mDrawable != null && mDrawable.isAutoMirrored();
     }
 
     @Override
     public void setAutoMirrored(boolean mirrored) {
-        if(mTarget != null){
-            mTarget.setAutoMirrored(mirrored);
+        if(mDrawable != null){
+            mDrawable.setAutoMirrored(mirrored);
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public boolean isFilterBitmap() {
-        return mTarget != null && mTarget.isFilterBitmap();
+        return mDrawable != null && mDrawable.isFilterBitmap();
     }
     @Override
     public void setFilterBitmap(boolean filter) {
-        if(mTarget != null){
-            mTarget.setFilterBitmap(filter);
+        if(mDrawable != null){
+            mDrawable.setFilterBitmap(filter);
         }
     }
     @Override
     public boolean isProjected() {
-        return mTarget != null && mTarget.isProjected();
+        if(mDrawable != null && Build.VERSION.SDK_INT >= 29){
+            return mDrawable.isProjected();
+        }
+        return super.isProjected();
     }
     @Override
     public boolean isStateful() {
-        return mTarget != null && mTarget.isStateful();
+        return mDrawable != null && mDrawable.isStateful();
     }
 
     @Override
     public void setChangingConfigurations(int configs) {
-        if(mTarget != null){
-            mTarget.setChangingConfigurations(configs);
+        if(mDrawable != null){
+            mDrawable.setChangingConfigurations(configs);
         }
     }
 
@@ -275,53 +308,46 @@ public class RoundDrawable extends Drawable implements RoundAttacher,Drawable.Ca
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void setHotspot(float x, float y) {
-        if(mTarget != null){
-            mTarget.setHotspot(x, y);
+        if(mDrawable != null){
+            mDrawable.setHotspot(x, y);
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void setHotspotBounds(int left, int top, int right, int bottom) {
-        if(mTarget != null){
-            mTarget.setHotspotBounds(left, top, right, bottom);
+        if(mDrawable != null){
+            mDrawable.setHotspotBounds(left, top, right, bottom);
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void setTint(int tintColor) {
-        if(mTarget != null){
-            mTarget.setTint(tintColor);
+    public void getHotspotBounds(Rect outRect) {
+        if (mDrawable != null && Build.VERSION.SDK_INT >= 23) {
+            mDrawable.getHotspotBounds(outRect);
+        } else {
+            outRect.set(getBounds());
         }
     }
 
     @Override
     public void setTintBlendMode(@Nullable BlendMode blendMode) {
-        if(mTarget != null){
-            mTarget.setTintBlendMode(blendMode);
+       // super.setTintBlendMode(blendMode);
+        if(mDrawable != null && Build.VERSION.SDK_INT >= 29){
+            mDrawable.setTintBlendMode(blendMode);
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void setTintList(@Nullable ColorStateList tint) {
-        if(mTarget != null){
-            mTarget.setTintList(tint);
+        if(mDrawable != null){
+            mDrawable.setTintList(tint);
         }
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public void setTintMode(@Nullable PorterDuff.Mode tintMode) {
-        if(mTarget != null){
-            mTarget.setTintMode(tintMode);
-        }
-    }
-
     //==========================
     @Override
     protected boolean onStateChange(int[] state) {
-        if (mTarget != null && mTarget.isStateful()) {
-            final boolean changed = mTarget.setState(state);
+        if (mDrawable != null && mDrawable.isStateful()) {
+            final boolean changed = mDrawable.setState(state);
             if (changed) {
                 onBoundsChange(getBounds());
             }
@@ -331,18 +357,19 @@ public class RoundDrawable extends Drawable implements RoundAttacher,Drawable.Ca
     }
     @Override
     protected boolean onLevelChange(int level) {
-        return mTarget != null && mTarget.setLevel(level);
+        return mDrawable != null && mDrawable.setLevel(level);
     }
     @Override
     protected void onBoundsChange(Rect bounds) {
-        if (mTarget != null) {
-            mTarget.setBounds(bounds);
+        applyRound();
+        if (mDrawable != null) {
+            mDrawable.setBounds(bounds);
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public boolean onLayoutDirectionChanged(int layoutDirection) {
-        return mTarget != null && mTarget.setLayoutDirection(layoutDirection);
+        return mDrawable != null && mDrawable.setLayoutDirection(layoutDirection);
     }
     //======================================
     @Override
@@ -369,14 +396,6 @@ public class RoundDrawable extends Drawable implements RoundAttacher,Drawable.Ca
         }
     }
 
-    public static TypedArray obtainAttributes(@NonNull Resources res,
-                                              @Nullable Resources.Theme theme, @NonNull AttributeSet set, @NonNull int[] attrs) {
-        if (theme == null) {
-            return res.obtainAttributes(set, attrs);
-        }
-        return theme.obtainStyledAttributes(set, attrs, 0, 0);
-    }
-
     static class State extends ConstantState{
 
         final RoundHelper mRoundHelper;
@@ -397,8 +416,8 @@ public class RoundDrawable extends Drawable implements RoundAttacher,Drawable.Ca
             RoundDrawable rd = new RoundDrawable(base, mRoundHelper);
             if(theme != null){
                 rd.applyTheme(theme);
+                rd.applyRound();
             }
-            rd.applyRound();
             return rd;
         }
         @Override

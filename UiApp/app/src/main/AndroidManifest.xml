@@ -21,6 +21,8 @@
         <activity android:name=".sample.TestRoundActivity2"
             android:theme="@style/AppTheme2"
             />
+        <activity android:name=".sample.TestRoundDrawableActivity"
+            />
     </application>
 
 </manifest>

@@ -54,8 +54,6 @@ public class RoundParameters implements Parcelable {
     public boolean hasBorder() {
         return borderWidthX > 0 || borderWidthY > 0;
     }
-
-
     protected RoundParameters(RoundParameters.Builder builder) {
         this.radiusX = builder.radiusX;
         this.radiusY = builder.radiusY;
@@ -92,6 +90,10 @@ public class RoundParameters implements Parcelable {
 
     public boolean isCircle() {
         return this.circle;
+    }
+    //has
+    public boolean isValid(){
+        return radiusX > 0 || radiusY > 0 || borderWidthX > 0 || borderWidthY > 0 || circle;
     }
 
     public static class Builder {

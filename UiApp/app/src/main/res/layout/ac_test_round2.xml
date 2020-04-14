@@ -19,6 +19,7 @@
             android:scaleType="fitXY"
             android:src="@drawable/file_ic_detail_excel"
             app:lib_ui_round="60dp"
+            app:lib_ui_round_circle="true"
             />
 
     </LinearLayout>

@@ -5,6 +5,9 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.heaven7.android.ui.R;
 
 /*public*/ final class Utils {
@@ -29,7 +32,7 @@ import com.heaven7.android.ui.R;
      * @param defaultParam the default parameters
      * @return the round parameters
      */
-    public static RoundParameters of(Context context, AttributeSet attrs, RoundParameters defaultParam){
+    public static RoundParameters of(Context context, @Nullable AttributeSet attrs, RoundParameters defaultParam){
         //1, set default
         //2, cover by attrs
         //3, cover by theme
@@ -40,53 +43,84 @@ import com.heaven7.android.ui.R;
             return null;
         }
         RoundParameters p = new RoundParameters(defaultParam);
-        if(defaultParam == null){
-            defaultParam = DEFAULT;
-        }
         try {
-            for (int i = 0; i < indexCount; i++) {
-                int idx = ta.getIndex(i);
-                int index = ATTRS[idx];
-                if(index == R.attr.lib_ui_round){
-                    int val = ta.getDimensionPixelSize(idx, (int) defaultParam.getRadiusX());
-                    p.setRadiusX(val);
-                    p.setRadiusY(val);
-                }else if(index == R.attr.lib_ui_round_x){
-                    p.setRadiusX(ta.getDimensionPixelSize(idx, (int) defaultParam.getRadiusX()));
-                }
-                else if(index == R.attr.lib_ui_round_y){
-                    p.setRadiusY(ta.getDimensionPixelSize(idx, (int) defaultParam.getRadiusY()));
-                }
-                else if(index == R.attr.lib_ui_round_border){
-                    int val = ta.getDimensionPixelSize(idx, (int) defaultParam.getBorderWidthX());
-                    p.setBorderWidthX(val);
-                    p.setBorderWidthY(val);
-                }
-                else if(index == R.attr.lib_ui_round_border_x){
-                    p.setBorderWidthX(ta.getDimensionPixelSize(idx, (int) defaultParam.getBorderWidthX()));
-                }
-                else if(index == R.attr.lib_ui_round_border_y){
-                    p.setBorderWidthY(ta.getDimensionPixelSize(idx, (int) defaultParam.getBorderWidthY()));
-                }
-                else if(index == R.attr.lib_ui_round_border_color){
-                    p.setBorderColor(ta.getColor(idx, defaultParam.getBorderColor()));
-                }
-                else if(index == R.attr.lib_ui_round_circle){
-                    p.setCircle(ta.getBoolean(idx, defaultParam.isCircle()));
-                }
-                else if(index == R.attr.lib_ui_round_afterPadding){
-                    p.setRoundAfterPadding(ta.getBoolean(idx, defaultParam.isRoundAfterPadding()));
-                }
-            }
+            getRoundParameter(ta, p, defaultParam);
         }finally {
             ta.recycle();
         }
         return p;
     }
 
-    public static RoundParameters applyTheme(Resources.Theme t, RoundParameters parameters) {
-        //TODO
+    private static void getRoundParameter(TypedArray ta, RoundParameters out, RoundParameters drp) {
+        if(drp == null){
+            drp = DEFAULT;
+        }
+        int indexCount = ta.getIndexCount();
+        for (int i = 0; i < indexCount; i++) {
+            int idx = ta.getIndex(i);
+            int index = ATTRS[idx];
+            if(index == R.attr.lib_ui_round){
+                int val = ta.getDimensionPixelSize(idx, (int) drp.getRadiusX());
+                out.setRadiusX(val);
+                out.setRadiusY(val);
+            }else if(index == R.attr.lib_ui_round_x){
+                out.setRadiusX(ta.getDimensionPixelSize(idx, (int) drp.getRadiusX()));
+            }
+            else if(index == R.attr.lib_ui_round_y){
+                out.setRadiusY(ta.getDimensionPixelSize(idx, (int) drp.getRadiusY()));
+            }
+            else if(index == R.attr.lib_ui_round_border){
+                int val = ta.getDimensionPixelSize(idx, (int) drp.getBorderWidthX());
+                out.setBorderWidthX(val);
+                out.setBorderWidthY(val);
+            }
+            else if(index == R.attr.lib_ui_round_border_x){
+                out.setBorderWidthX(ta.getDimensionPixelSize(idx, (int) drp.getBorderWidthX()));
+            }
+            else if(index == R.attr.lib_ui_round_border_y){
+                out.setBorderWidthY(ta.getDimensionPixelSize(idx, (int) drp.getBorderWidthY()));
+            }
+            else if(index == R.attr.lib_ui_round_border_color){
+                out.setBorderColor(ta.getColor(idx, drp.getBorderColor()));
+            }
+            else if(index == R.attr.lib_ui_round_circle){
+                out.setCircle(ta.getBoolean(idx, drp.isCircle()));
+            }
+            else if(index == R.attr.lib_ui_round_afterPadding){
+                out.setRoundAfterPadding(ta.getBoolean(idx, drp.isRoundAfterPadding()));
+            }
+        }
+    }
 
-        return null;
+    public static void applyTheme(@NonNull Resources.Theme t, @Nullable RoundParameters rp) {
+        if(rp == null){
+            return;
+        }
+        TypedArray ta = t.obtainStyledAttributes(ATTRS);
+        try {
+            getRoundParameter(ta, rp, null);
+        }finally {
+            ta.recycle();
+        }
+    }
+    public static void applyTheme(@NonNull Resources res, @Nullable Resources.Theme theme, @NonNull AttributeSet set, @Nullable RoundParameters rp) {
+        if(rp == null){
+            return;
+        }
+        TypedArray ta = obtainAttributes(res, theme, set, ATTRS);
+       // TypedArray ta = res.obtainAttributes(set, ATTRS);
+        try {
+            getRoundParameter(ta, rp, null);
+        }finally {
+            ta.recycle();
+        }
+    }
+
+    public static TypedArray obtainAttributes(@NonNull Resources res,
+                                              @Nullable Resources.Theme theme, @NonNull AttributeSet set, @NonNull int[] attrs) {
+        if (theme == null) {
+            return res.obtainAttributes(set, attrs);
+        }
+        return theme.obtainStyledAttributes(set, attrs, 0, 0);
     }
 }
