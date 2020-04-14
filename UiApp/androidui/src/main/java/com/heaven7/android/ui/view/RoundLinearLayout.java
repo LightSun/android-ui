@@ -5,19 +5,19 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
 import com.heaven7.android.ui.round.RoundHelper;
+import com.heaven7.android.ui.round.RoundAttacher;
 import com.heaven7.android.ui.round.RoundPartDelegate;
 
 /**
  * the round relative-layout
  * @author heaven7
  */
-public class RoundLinearLayout extends LinearLayout implements RoundHelper.Callback {
+public class RoundLinearLayout extends LinearLayout implements RoundAttacher, RoundHelper.Callback {
 
     private final RoundHelper mHelper = new RoundHelper(this, this);
 

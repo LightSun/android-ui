@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
 
 import com.heaven7.android.ui.round.RoundHelper;
+import com.heaven7.android.ui.round.RoundAttacher;
 import com.heaven7.android.ui.round.RoundPartDelegate;
 
 /**
@@ -17,7 +18,7 @@ import com.heaven7.android.ui.round.RoundPartDelegate;
  * @author heaven7
  * @since 1.0.3
  */
-public class RoundRelativeLayout extends RelativeLayout implements RoundHelper.Callback {
+public class RoundRelativeLayout extends RelativeLayout implements RoundAttacher, RoundHelper.Callback {
 
     private final RoundHelper mHelper = new RoundHelper(this, this);
 

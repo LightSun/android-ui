@@ -3,6 +3,7 @@ package com.heaven7.android.ui.round;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
@@ -17,7 +18,7 @@ import androidx.annotation.Nullable;
 
 /**
  * the round helper. help fast set round parameters
- * <p>Note: currently not compat with 'android:clipchildren'.</p>
+ * <p>Note: currently not compat with 'android:clipchildren' for view. but part is support.</p>
  * @author heaven7
  */
 public final class RoundHelper {
@@ -29,6 +30,7 @@ public final class RoundHelper {
     private Paint mPaint;
 
     private final View mView;
+    private final Resources mResource;
     private final RoundPartDelegate mPartDelegate;
     private final Callback mCallback;
     private boolean mDirty;
@@ -43,9 +45,7 @@ public final class RoundHelper {
      * @since 1.0.2
      */
     public RoundHelper(View view, RoundPartDelegate delegate, @Nullable Callback callback) {
-        this.mView = view;
-        this.mPartDelegate = delegate;
-        this.mCallback = callback;
+        this(view.getResources(), view, delegate, callback);
     }
     /**
      * create round helper by default view round-part
@@ -53,7 +53,25 @@ public final class RoundHelper {
      * @param callback the callback to draw. can be null.
      */
     public RoundHelper(View view, @Nullable Callback callback) {
-       this(view, new ViewRoundPartDelegate(view), callback);
+       this(view.getResources(), view, new ViewRoundPartDelegate(view), callback);
+    }
+
+    /**
+     * create round helper by delegate and callback
+     * @param res the resource
+     * @param delegate the delegate
+     * @param callback the callback
+     * @since 1.0.3
+     */
+    public RoundHelper(Resources res, RoundPartDelegate delegate, @Nullable Callback callback){
+        this(res, null, delegate, callback);
+    }
+
+    private RoundHelper(Resources res, View view, RoundPartDelegate delegate, @Nullable Callback callback) {
+        this.mResource = res;
+        this.mView = view;
+        this.mPartDelegate = delegate;
+        this.mCallback = callback;
     }
     /**
      * get the round parameters from known attrs. order is 'attrs -> theme'
@@ -67,7 +85,7 @@ public final class RoundHelper {
     }
 
     /**
-     * get view
+     * get view . may be null if not used from view.
      * @return view
      * @since 1.0.2
      */
@@ -75,12 +93,12 @@ public final class RoundHelper {
         return mView;
     }
     /**
-     * get Context
+     * get Context. may be null . if have no view
      * @return Context
      * @since 1.0.2
      */
     public Context getContext(){
-        return mView.getContext();
+        return mView != null ? mView.getContext() : null;
     }
     /**
      * get Resources
@@ -88,7 +106,7 @@ public final class RoundHelper {
      * @since 1.0.2
      */
     public Resources getResource(){
-        return mView.getResources();
+        return mResource;
     }
     public RoundParameters getRoundParameters() {
         return mParams;
@@ -102,6 +120,11 @@ public final class RoundHelper {
      */
     public void apply(){
         if(mDirty || mParams == null){
+            return;
+        }
+        //if not used for view. apply direct
+        if(mView == null){
+            applyDirect();
             return;
         }
         mDirty = true;
@@ -208,6 +231,12 @@ public final class RoundHelper {
             }
         }
     }
+    private void initBorderPaintIfNeed(){
+        if(mPaint == null){
+            mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            mPaint.setStyle(Paint.Style.FILL);
+        }
+    }
 
     /**
      * called on save instance state
@@ -234,6 +263,21 @@ public final class RoundHelper {
         return b.getParcelable("super");
     }
 
+    public int getAlpha() {
+        initBorderPaintIfNeed();
+        return mPaint.getAlpha();
+    }
+
+    public void setAlpha(int alpha) {
+        initBorderPaintIfNeed();
+        mPaint.setAlpha(alpha);
+    }
+
+    public void setColorFilter(ColorFilter filter) {
+        initBorderPaintIfNeed();
+        mPaint.setColorFilter(filter);
+    }
+
     /**
      * the callback
      */
@@ -244,5 +288,12 @@ public final class RoundHelper {
          * @param canvas the canvas to draw
          */
         void draw0(RoundPartDelegate delegate, Canvas canvas);
+    }
+
+    /**
+     * the
+     */
+    public interface RoundCalculator{
+        float getRadius(RoundParameters rp, boolean x);
     }
 }

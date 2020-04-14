@@ -1,6 +1,7 @@
 package com.heaven7.android.ui.round;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
@@ -81,5 +82,11 @@ import com.heaven7.android.ui.R;
             ta.recycle();
         }
         return p;
+    }
+
+    public static RoundParameters applyTheme(Resources.Theme t, RoundParameters parameters) {
+        //TODO
+
+        return null;
     }
 }
