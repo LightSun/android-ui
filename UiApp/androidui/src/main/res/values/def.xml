@@ -20,5 +20,6 @@
         <attr name="round_size" format="dimension|reference"/>
         <attr name="border_color" format="color|reference"/>
         <attr name="border_size" format="dimension|reference"/>
+        <attr name="afterPadding" format="boolean|reference"/>
     </declare-styleable>
 </resources>

@@ -26,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.heaven7.android.ui.R;
+import com.heaven7.android.ui.round.delegate.DrawablePartDelegate;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -35,9 +36,10 @@ import java.io.IOException;
 import static com.heaven7.android.ui.round.Utils.obtainAttributes;
 
 /**
- * the round drawable.
+ * the round drawable. wrap the round helper
+ * @see RoundHelper
+ * @since 1.0.3
  */
-//TODO use RoundDrawable in xml .test failed .currently only round applied.
 public class RoundDrawable extends Drawable implements RoundAttacher, Drawable.Callback {
 
     private Drawable mDrawable;
@@ -51,6 +53,12 @@ public class RoundDrawable extends Drawable implements RoundAttacher, Drawable.C
         this.mRoundHelper = mRoundHelper;
     }
 
+    /**
+     * create round drawable from target context and base drawable.
+     * @param context the context
+     * @param base the base drawable
+     * @return the round drawable
+     */
     public static RoundDrawable create(Context context, Drawable base){
         RoundDrawable rd = new RoundDrawable();
         rd.setUpRoundHelper(context.getResources());
@@ -62,15 +70,6 @@ public class RoundDrawable extends Drawable implements RoundAttacher, Drawable.C
         if(mRoundHelper != null){
             mRoundHelper.applyDirect();
         }
-    }
-    private void setUpRoundHelper(Resources res){
-        this.mRoundHelper = new RoundHelper(res, new DrawablePartDelegate(this), new RoundHelper.Callback() {
-            @Override
-            public void draw0(RoundPartDelegate delegate, Canvas canvas) {
-                mDrawable.draw(canvas);
-            }
-        });
-        applyRound();
     }
     public void setDrawable(Drawable dr) {
         if (mDrawable != null) {
@@ -94,6 +93,15 @@ public class RoundDrawable extends Drawable implements RoundAttacher, Drawable.C
     }
     public Drawable getDrawable() {
         return mDrawable;
+    }
+    private void setUpRoundHelper(Resources res){
+        this.mRoundHelper = new RoundHelper(res, new DrawablePartDelegate(this), new RoundHelper.Callback() {
+            @Override
+            public void draw0(RoundPartDelegate delegate, Canvas canvas) {
+                mDrawable.draw(canvas);
+            }
+        });
+        applyRound();
     }
     @Override
     public RoundHelper getRoundHelper() {
@@ -249,12 +257,14 @@ public class RoundDrawable extends Drawable implements RoundAttacher, Drawable.C
         int color;
         boolean circle;
         Drawable base;
+        boolean afterPadding;
         final TypedArray a = obtainAttributes(r, theme, attrs, R.styleable.RoundDrawable);
         try {
             roundSize = a.getDimensionPixelSize(R.styleable.RoundDrawable_round_size, 0);
             borderSize = a.getDimensionPixelSize(R.styleable.RoundDrawable_border_size, 0);
             color = a.getColor(R.styleable.RoundDrawable_border_color, Color.BLACK);
             circle = a.getBoolean(R.styleable.RoundDrawable_circle, false);
+            afterPadding = a.getBoolean(R.styleable.RoundDrawable_afterPadding, false);
             base = a.getDrawable(R.styleable.RoundDrawable_drawable);
         }finally {
             a.recycle();
@@ -265,6 +275,7 @@ public class RoundDrawable extends Drawable implements RoundAttacher, Drawable.C
         rp.setBorderWidthY(borderSize);
         rp.setBorderColor(color);
         rp.setCircle(circle);
+        rp.setRoundAfterPadding(afterPadding);
         if(rp.isValid()){
             mRoundHelper.setRoundParameters(rp);
             mRoundHelper.applyDirect();

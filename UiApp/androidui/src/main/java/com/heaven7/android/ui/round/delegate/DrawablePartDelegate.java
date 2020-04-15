@@ -1,7 +1,10 @@
-package com.heaven7.android.ui.round;
+package com.heaven7.android.ui.round.delegate;
 
 
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+
+import com.heaven7.android.ui.round.RoundPartDelegate;
 
 public class DrawablePartDelegate implements RoundPartDelegate {
 
@@ -10,7 +13,6 @@ public class DrawablePartDelegate implements RoundPartDelegate {
     public DrawablePartDelegate(Drawable drawable) {
         this.drawable = drawable;
     }
-
     @Override
     public int getWidth() {
         return drawable.getBounds().width();
@@ -20,20 +22,7 @@ public class DrawablePartDelegate implements RoundPartDelegate {
         return drawable.getBounds().height();
     }
     @Override
-    public int getPaddingLeft() {
-        return 0;
-    }
-    @Override
-    public int getPaddingTop() {
-        return 0;
-    }
-
-    @Override
-    public int getPaddingRight() {
-        return 0;
-    }
-    @Override
-    public int getPaddingBottom() {
-        return 0;
+    public void getPadding(Rect rect) {
+        drawable.getPadding(rect);
     }
 }

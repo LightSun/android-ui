@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -15,6 +16,8 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 
 import androidx.annotation.Nullable;
+
+import com.heaven7.android.ui.round.delegate.ViewRoundPartDelegate;
 
 /**
  * the round helper. help fast set round parameters
@@ -26,7 +29,8 @@ public final class RoundHelper {
     private static final String TAG = "RoundHelper";
     private final Path mPath = new Path();
     //private final Path mBorderPath = new Path();
-    private final RectF mRect = new RectF();
+    private final RectF mRectF = new RectF();
+    private final Rect mRect = new Rect();
     private Paint mPaint;
 
     private final View mView;
@@ -36,6 +40,7 @@ public final class RoundHelper {
     private boolean mDirty;
 
     private RoundParameters mParams;
+    private Calculator mCalculator;
 
     /**
      * create round helper by target round-part
@@ -142,6 +147,24 @@ public final class RoundHelper {
     }
 
     /**
+     * the calculator
+     * @return the calculator
+     * @since 1.0.3
+     */
+    public Calculator getCalculator() {
+        return mCalculator;
+    }
+
+    /**
+     * set the calculator
+     * @param calculator the calculator
+     * @since 1.0.3
+     */
+    public void setCalculator(Calculator calculator) {
+        this.mCalculator = calculator;
+    }
+
+    /**
      * apply direct without on pre-draw listener
      */
     public void applyDirect(){
@@ -175,7 +198,7 @@ public final class RoundHelper {
             if(mParams.hasBorder()){
                 mPaint.setColor(mParams.getBorderColor());
                // canvas.save();
-                canvas.drawRoundRect(mRect,  getRadius(true), getRadius(false), mPaint);
+                canvas.drawRoundRect(mRectF,  getRadius(true), getRadius(false), mPaint);
                // canvas.restore();
             }
 
@@ -189,11 +212,20 @@ public final class RoundHelper {
     }
 
     private float getRadius(boolean x){
+        if(mCalculator != null){
+            return mCalculator.getRoundSize(mParams, x);
+        }
         if(x){
             return mParams.isCircle() ? mPartDelegate.getWidth()*1f / 2 : mParams.getRadiusX();
         }else {
             return mParams.isCircle() ? mPartDelegate.getHeight()*1f / 2 : mParams.getRadiusY();
         }
+    }
+    private float getBorderSize(boolean x){
+        if(mCalculator != null){
+            return mCalculator.getBorderSize(mParams, x);
+        }
+        return x ? mParams.getBorderWidthX() : mParams.getBorderWidthY();
     }
 
     private void apply0(int w, int h){
@@ -201,33 +233,31 @@ public final class RoundHelper {
             return;
         }
         Log.d(TAG, "apply0:  w = " + w + ", h = " + h);
-        int padLeft = mPartDelegate.getPaddingLeft();
-        int padTop = mPartDelegate.getPaddingTop();
-        int padRight = mPartDelegate.getPaddingRight();
-        int padBottom = mPartDelegate.getPaddingBottom();
+        mPartDelegate.getPadding(mRect);
+        int padLeft = mRect.left;
+        int padTop = mRect.top;
+        int padRight = mRect.right;
+        int padBottom = mRect.bottom;
         //
         mPath.reset();
         if(mParams.isRoundAfterPadding()){
-            mRect.set(padLeft, padTop, w - padRight, h - padBottom);
+            mRectF.set(padLeft, padTop, w - padRight, h - padBottom);
         }else {
-            mRect.set(0, 0, w,  h);
+            mRectF.set(0, 0, w,  h);
         }
         if(mParams.hasBorder()){
-            mRect.inset(mParams.getBorderWidthX(), mParams.getBorderWidthY());
-            if(mPaint == null){
-                mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                mPaint.setStyle(Paint.Style.FILL);
-            }
+            mRectF.inset(getBorderSize(true), getBorderSize(false));
+            initBorderPaintIfNeed();
         }
-        mPath.addRoundRect(mRect, getRadius(true), getRadius(false), Path.Direction.CW);
+        mPath.addRoundRect(mRectF, getRadius(true), getRadius(false), Path.Direction.CW);
         mPath.close();
 
         //mBorderPath
         if(mParams.hasBorder()){
             if(mParams.isRoundAfterPadding()){
-                mRect.set(padLeft, padTop, w - padRight, h - padBottom);
+                mRectF.set(padLeft, padTop, w - padRight, h - padBottom);
             }else {
-                mRect.set(0, 0, w,  h);
+                mRectF.set(0, 0, w,  h);
             }
         }
     }
@@ -283,9 +313,11 @@ public final class RoundHelper {
     }
 
     /**
-     * the
+     * the calculator which can used for animate drawable.
+     * @since 1.0.3
      */
-    public interface RoundCalculator{
-        float getRadius(RoundParameters rp, boolean x);
+    public interface Calculator{
+        float getRoundSize(RoundParameters rp, boolean x);
+        float getBorderSize(RoundParameters rp, boolean x);
     }
 }

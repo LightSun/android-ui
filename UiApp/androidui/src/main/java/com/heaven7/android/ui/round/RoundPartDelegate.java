@@ -1,5 +1,7 @@
 package com.heaven7.android.ui.round;
 
+import android.graphics.Rect;
+
 /**
  * the round part delegate
  * @author heven7
@@ -10,8 +12,5 @@ public interface RoundPartDelegate {
     int getWidth();
     int getHeight();
 
-    int getPaddingLeft();
-    int getPaddingTop();
-    int getPaddingRight();
-    int getPaddingBottom();
+    void getPadding(Rect rect);
 }
