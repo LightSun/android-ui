@@ -13,6 +13,10 @@ public class DrawablePartDelegate implements RoundPartDelegate {
     public DrawablePartDelegate(Drawable drawable) {
         this.drawable = drawable;
     }
+
+    public Drawable getDrawable() {
+        return drawable;
+    }
     @Override
     public int getWidth() {
         return drawable.getBounds().width();

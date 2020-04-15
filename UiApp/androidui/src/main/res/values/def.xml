@@ -21,5 +21,7 @@
         <attr name="border_color" format="color|reference"/>
         <attr name="border_size" format="dimension|reference"/>
         <attr name="afterPadding" format="boolean|reference"/>
+        <!-- the calculator used for RoundHelper. this can used to do with animate drawable. -->
+        <attr name="calculator" format="string|reference"/>
     </declare-styleable>
 </resources>

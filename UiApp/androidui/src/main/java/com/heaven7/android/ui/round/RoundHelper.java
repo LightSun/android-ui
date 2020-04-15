@@ -213,7 +213,7 @@ public final class RoundHelper {
 
     private float getRadius(boolean x){
         if(mCalculator != null){
-            return mCalculator.getRoundSize(mParams, x);
+            return mCalculator.getRoundSize(mPartDelegate, mParams, x);
         }
         if(x){
             return mParams.isCircle() ? mPartDelegate.getWidth()*1f / 2 : mParams.getRadiusX();
@@ -223,7 +223,7 @@ public final class RoundHelper {
     }
     private float getBorderSize(boolean x){
         if(mCalculator != null){
-            return mCalculator.getBorderSize(mParams, x);
+            return mCalculator.getBorderSize(mPartDelegate, mParams, x);
         }
         return x ? mParams.getBorderWidthX() : mParams.getBorderWidthY();
     }
@@ -317,7 +317,7 @@ public final class RoundHelper {
      * @since 1.0.3
      */
     public interface Calculator{
-        float getRoundSize(RoundParameters rp, boolean x);
-        float getBorderSize(RoundParameters rp, boolean x);
+        float getRoundSize(RoundPartDelegate delegate,RoundParameters rp, boolean x);
+        float getBorderSize(RoundPartDelegate delegate,RoundParameters rp, boolean x);
     }
 }

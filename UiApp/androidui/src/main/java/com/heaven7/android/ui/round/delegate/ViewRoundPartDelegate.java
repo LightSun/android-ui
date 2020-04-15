@@ -13,6 +13,9 @@ public class ViewRoundPartDelegate implements RoundPartDelegate {
         this.view = view;
     }
 
+    public View getView() {
+        return view;
+    }
     @Override
     public int getWidth() {
         return view.getWidth();

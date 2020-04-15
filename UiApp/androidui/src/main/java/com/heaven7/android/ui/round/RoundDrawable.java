@@ -165,6 +165,8 @@ public class RoundDrawable extends Drawable implements RoundAttacher, Drawable.C
             RoundDrawable rd = new RoundDrawable();
             rd.setUpRoundHelper(mRoundHelper.getResource());
             rd.setDrawable(mDrawable.mutate());
+            //set calculator
+            rd.mRoundHelper.setCalculator(mRoundHelper.getCalculator());
             //copy round params
             if(mRoundHelper.getRoundParameters() != null){
                 rd.mRoundHelper.setRoundParameters(new RoundParameters(mRoundHelper.getRoundParameters()));
@@ -258,6 +260,8 @@ public class RoundDrawable extends Drawable implements RoundAttacher, Drawable.C
         boolean circle;
         Drawable base;
         boolean afterPadding;
+        String cn;
+
         final TypedArray a = obtainAttributes(r, theme, attrs, R.styleable.RoundDrawable);
         try {
             roundSize = a.getDimensionPixelSize(R.styleable.RoundDrawable_round_size, 0);
@@ -266,6 +270,7 @@ public class RoundDrawable extends Drawable implements RoundAttacher, Drawable.C
             circle = a.getBoolean(R.styleable.RoundDrawable_circle, false);
             afterPadding = a.getBoolean(R.styleable.RoundDrawable_afterPadding, false);
             base = a.getDrawable(R.styleable.RoundDrawable_drawable);
+            cn = a.getString(R.styleable.RoundDrawable_calculator);
         }finally {
             a.recycle();
         }
@@ -276,6 +281,14 @@ public class RoundDrawable extends Drawable implements RoundAttacher, Drawable.C
         rp.setBorderColor(color);
         rp.setCircle(circle);
         rp.setRoundAfterPadding(afterPadding);
+        if(cn != null){
+            try {
+                RoundHelper.Calculator calculator = (RoundHelper.Calculator) Class.forName(cn).newInstance();
+                mRoundHelper.setCalculator(calculator);
+            } catch (Exception e) {
+                throw new RuntimeException("calculator error", e);
+            }
+        }
         if(rp.isValid()){
             mRoundHelper.setRoundParameters(rp);
             mRoundHelper.applyDirect();
