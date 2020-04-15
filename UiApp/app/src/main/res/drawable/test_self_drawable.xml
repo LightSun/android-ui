@@ -2,11 +2,11 @@
 <drawable xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     class="com.heaven7.android.ui.round.RoundDrawable"
-    app:lib_ui_base_drawable="@drawable/file_ic_detail_excel"
-    app:lib_ui_round="50dp"
-    app:lib_ui_round_border="10dp"
-    app:lib_ui_round_border_color="@color/colorPrimary"
-    app:lib_ui_round_circle="true"
+    app:drawable="@drawable/file_ic_detail_excel"
+    app:round_size="50dp"
+    app:border_size="10dp"
+    app:border_color="@color/colorPrimary"
+    app:circle="true"
     >
     <!-- api 24
     have nothing effect in here why ?

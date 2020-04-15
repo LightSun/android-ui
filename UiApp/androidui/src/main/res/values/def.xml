@@ -14,6 +14,11 @@
 
     <declare-styleable name="RoundDrawable">
         <!-- The wrapped drawable. -->
-        <attr name="lib_ui_base_drawable" format="reference"/>
+        <attr name="drawable" format="reference"/>
+        <attr name="circle" format="boolean|reference"/>
+
+        <attr name="round_size" format="dimension|reference"/>
+        <attr name="border_color" format="color|reference"/>
+        <attr name="border_size" format="dimension|reference"/>
     </declare-styleable>
 </resources>

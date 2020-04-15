@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.BlendMode;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Insets;
 import android.graphics.Outline;
@@ -242,18 +243,33 @@ public class RoundDrawable extends Drawable implements RoundAttacher, Drawable.C
         //set up round
         RoundParameters rp = new RoundParameters();
         setUpRoundHelper(r);
-        Utils.applyTheme(r, theme, attrs, rp);
+        //setup self-attrs
+        int roundSize;
+        int borderSize;
+        int color;
+        boolean circle;
+        Drawable base;
+        final TypedArray a = obtainAttributes(r, theme, attrs, R.styleable.RoundDrawable);
+        try {
+            roundSize = a.getDimensionPixelSize(R.styleable.RoundDrawable_round_size, 0);
+            borderSize = a.getDimensionPixelSize(R.styleable.RoundDrawable_border_size, 0);
+            color = a.getColor(R.styleable.RoundDrawable_border_color, Color.BLACK);
+            circle = a.getBoolean(R.styleable.RoundDrawable_circle, false);
+            base = a.getDrawable(R.styleable.RoundDrawable_drawable);
+        }finally {
+            a.recycle();
+        }
+        rp.setRadiusX(roundSize);
+        rp.setRadiusY(roundSize);
+        rp.setBorderWidthX(borderSize);
+        rp.setBorderWidthY(borderSize);
+        rp.setBorderColor(color);
+        rp.setCircle(circle);
         if(rp.isValid()){
             mRoundHelper.setRoundParameters(rp);
             mRoundHelper.applyDirect();
         }
-        //setup drawable
-        final TypedArray a = obtainAttributes(r, theme, attrs, R.styleable.RoundDrawable);
-        try {
-           setDrawable(a.getDrawable(R.styleable.RoundDrawable_lib_ui_base_drawable));
-        }finally {
-            a.recycle();
-        }
+        setDrawable(base);
     }
 
     //===================
