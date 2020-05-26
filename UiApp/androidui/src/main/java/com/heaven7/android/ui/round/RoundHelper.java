@@ -317,7 +317,21 @@ public final class RoundHelper {
      * @since 1.0.3
      */
     public interface Calculator{
+        /**
+         * get the round size
+         * @param delegate the round part delegate
+         * @param rp the round parameter
+         * @param x true if as x-axis, false as y-axis
+         * @return the round size
+         */
         float getRoundSize(RoundPartDelegate delegate,RoundParameters rp, boolean x);
+        /**
+         * get the border size
+         * @param delegate the round part delegate
+         * @param rp the round parameter
+         * @param x true if as x-axis, false as y-axis
+         * @return the border size
+         */
         float getBorderSize(RoundPartDelegate delegate,RoundParameters rp, boolean x);
     }
 }

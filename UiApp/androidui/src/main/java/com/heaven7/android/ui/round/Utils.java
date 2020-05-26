@@ -37,18 +37,18 @@ import com.heaven7.android.ui.R;
         //2, cover by attrs
         //3, cover by theme
         TypedArray ta = context.obtainStyledAttributes(attrs, ATTRS);
-        int indexCount = ta.getIndexCount();
-        //no attribute and default is null
-        if(indexCount == 0 && defaultParam == null){
-            return null;
-        }
-        RoundParameters p = new RoundParameters(defaultParam);
         try {
+            int indexCount = ta.getIndexCount();
+            //no attribute and default is null
+            if(indexCount == 0 && defaultParam == null){
+                return null;
+            }
+            RoundParameters p = new RoundParameters(defaultParam);
             getRoundParameter(ta, p, defaultParam);
+            return p;
         }finally {
             ta.recycle();
         }
-        return p;
     }
 
     private static void getRoundParameter(TypedArray ta, RoundParameters out, RoundParameters drp) {
