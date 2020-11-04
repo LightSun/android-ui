@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="20dp">
 
     <LinearLayout
@@ -29,11 +30,15 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:orientation="horizontal"
+        app:lib_ui_round="5dp"
+        app:lib_ui_round_border="2dp"
+        app:lib_ui_round_border_color="#ff0000"
         >
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary"
+            android:layout_margin="10dp"
             />
     </com.heaven7.android.ui.view.RoundLinearLayout>
 
