@@ -23,6 +23,25 @@ import com.heaven7.android.ui.R;
             R.attr.lib_ui_round_circle,
             R.attr.lib_ui_round_afterPadding,
     };
+    private static final int[] ATTRS_ROUND = {
+            R.attr.lib_ui_round,
+    };
+    private static final int[] ATTRS_ROUND_XY = {
+            R.attr.lib_ui_round_x,
+            R.attr.lib_ui_round_y,
+    };
+    private static final int[] ATTRS_BORDER_XY = {
+            R.attr.lib_ui_round_border_x,
+            R.attr.lib_ui_round_border_y,
+    };
+    private static final int[] ATTRS_BORDER = {
+            R.attr.lib_ui_round_border,
+            R.attr.lib_ui_round_border_color,
+    };
+    private static final int[] ATTRS_EXTRA = {
+            R.attr.lib_ui_round_circle,
+            R.attr.lib_ui_round_afterPadding,
+    };
     private static final RoundParameters DEFAULT = new RoundParameters();
 
     /**
@@ -36,29 +55,53 @@ import com.heaven7.android.ui.R;
         //1, set default
         //2, cover by attrs
         //3, cover by theme
-        TypedArray ta = context.obtainStyledAttributes(attrs, ATTRS);
+       /* TypedArray ta = context.obtainStyledAttributes(attrs, ATTRS);
+        System.err.println("getIndexCount = " + ta.getIndexCount());
+
+        ta = context.obtainStyledAttributes(attrs, ATTRS_ROUND);
+        System.err.println("getIndexCount = " + ta.getIndexCount());
+
+        ta = context.obtainStyledAttributes(attrs, ATTRS_ROUND_XY);
+        System.err.println("getIndexCount = " + ta.getIndexCount());
+
+        ta = context.obtainStyledAttributes(attrs, ATTRS_BORDER_XY);
+        System.err.println("getIndexCount = " + ta.getIndexCount());
+
+        ta = context.obtainStyledAttributes(attrs, ATTRS_BORDER);
+        System.err.println("getIndexCount = " + ta.getIndexCount());
+
+        ta = context.obtainStyledAttributes(attrs, ATTRS_EXTRA);
+        System.err.println("getIndexCount = " + ta.getIndexCount());*/
+
+        //why global attrs can't obtain larger than two ?
+        RoundParameters p = new RoundParameters(defaultParam);
+        int size = 0;
+        size += getImpl(context, attrs, ATTRS_ROUND, p, defaultParam);
+        size += getImpl(context, attrs, ATTRS_ROUND_XY, p, defaultParam);
+        size += getImpl(context, attrs, ATTRS_BORDER_XY, p, defaultParam);
+        size += getImpl(context, attrs, ATTRS_BORDER, p, defaultParam);
+        size += getImpl(context, attrs, ATTRS_EXTRA, p, defaultParam);
+        return size != 0 ? p : defaultParam;
+    }
+
+    private static int getImpl(Context context, @Nullable AttributeSet as, int[] attrs,
+                               RoundParameters out, RoundParameters drp){
+        TypedArray ta = context.obtainStyledAttributes(as, attrs);
         try {
-            int indexCount = ta.getIndexCount();//TODO fix? get index count 个数不对
-            //no attribute and default is null
-            if(indexCount == 0 && defaultParam == null){
-                return null;
-            }
-            RoundParameters p = new RoundParameters(defaultParam);
-            getRoundParameter(ta, p, defaultParam);
-            return p;
+            return getRoundParameter(ta, attrs, out, drp);
         }finally {
             ta.recycle();
         }
     }
 
-    private static void getRoundParameter(TypedArray ta, RoundParameters out, RoundParameters drp) {
+    private static int getRoundParameter(TypedArray ta, int[] attrs, RoundParameters out, RoundParameters drp) {
         if(drp == null){
             drp = DEFAULT;
         }
         int indexCount = ta.getIndexCount();
         for (int i = 0; i < indexCount; i++) {
             int idx = ta.getIndex(i);
-            int index = ATTRS[idx];
+            int index = attrs[idx];
             if(index == R.attr.lib_ui_round){
                 int val = ta.getDimensionPixelSize(idx, (int) drp.getRadiusX());
                 out.setRadiusX(val);
@@ -90,6 +133,7 @@ import com.heaven7.android.ui.R;
                 out.setRoundAfterPadding(ta.getBoolean(idx, drp.isRoundAfterPadding()));
             }
         }
+        return indexCount;
     }
 
     public static void applyTheme(@NonNull Resources.Theme t, @Nullable RoundParameters rp) {
@@ -98,7 +142,7 @@ import com.heaven7.android.ui.R;
         }
         TypedArray ta = t.obtainStyledAttributes(ATTRS);
         try {
-            getRoundParameter(ta, rp, null);
+            getRoundParameter(ta, ATTRS, rp, null);
         }finally {
             ta.recycle();
         }
@@ -110,7 +154,7 @@ import com.heaven7.android.ui.R;
         TypedArray ta = obtainAttributes(res, theme, set, ATTRS);
        // TypedArray ta = res.obtainAttributes(set, ATTRS);
         try {
-            getRoundParameter(ta, rp, null);
+            getRoundParameter(ta, ATTRS,  rp, null);
         }finally {
             ta.recycle();
         }

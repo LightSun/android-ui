@@ -31,7 +31,7 @@
         android:layout_height="100dp"
         android:orientation="horizontal"
         app:lib_ui_round="5dp"
-        app:lib_ui_round_border="1px"
+        app:lib_ui_round_border="2dp"
         app:lib_ui_round_border_color="#ff0000"
         android:padding="1px"
         >
