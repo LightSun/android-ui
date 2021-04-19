@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="lib_ui_round" format="dimension|reference"/>
     <attr name="lib_ui_round_x" format="dimension|reference"/>
     <attr name="lib_ui_round_y" format="dimension|reference"/>
-    <attr name="lib_ui_round" format="dimension|reference"/>
 
+    <attr name="lib_ui_round_border" format="dimension|reference"/>
     <attr name="lib_ui_round_border_x" format="dimension|reference"/>
     <attr name="lib_ui_round_border_y" format="dimension|reference"/>
-    <attr name="lib_ui_round_border" format="dimension|reference"/>
     <attr name="lib_ui_round_border_color" format="color|reference"/>
 
     <attr name="lib_ui_round_circle" format="boolean|reference"/>

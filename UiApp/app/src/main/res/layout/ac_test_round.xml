@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="20dp">
 
-    <LinearLayout
+   <!-- <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -24,31 +24,41 @@
             android:scaleType="fitXY"
             android:src="@drawable/file_ic_detail_excel" />
 
-    </LinearLayout>
+    </LinearLayout>-->
 
     <com.heaven7.android.ui.view.RoundLinearLayout
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:orientation="horizontal"
         app:lib_ui_round="5dp"
-        app:lib_ui_round_border="2dp"
+        app:lib_ui_round_border="1px"
         app:lib_ui_round_border_color="#ff0000"
+        android:padding="1px"
         >
         <View
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary"
-            android:layout_margin="10dp"
             />
+        <FrameLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content">
+            <View
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                />
+        </FrameLayout>
+
     </com.heaven7.android.ui.view.RoundLinearLayout>
 
-    <com.heaven7.android.ui.view.RoundLinearLayout
+  <!--  <com.heaven7.android.ui.view.RoundLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dp"
         android:background="@color/colorAccent"
         android:layout_margin="10dp"
         />
-
+-->
 
 </LinearLayout>

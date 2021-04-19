@@ -38,7 +38,7 @@ import com.heaven7.android.ui.R;
         //3, cover by theme
         TypedArray ta = context.obtainStyledAttributes(attrs, ATTRS);
         try {
-            int indexCount = ta.getIndexCount();
+            int indexCount = ta.getIndexCount();//TODO fix? get index count 个数不对
             //no attribute and default is null
             if(indexCount == 0 && defaultParam == null){
                 return null;
