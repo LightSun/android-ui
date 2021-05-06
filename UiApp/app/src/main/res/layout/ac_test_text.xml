@@ -22,7 +22,8 @@
         android:layout_height="100dp"
         android:layout_marginTop="30dp"
         app:wv_rotate_degree="0"
-        app:wv_text="中联钢信酒店附近的房价的飞机发动机\n复合肥好烦好烦fdd方法附近\n繁华的回复地方的经济"
+        app:wv_text="中联钢信"
         app:wv_text_size="30sp"
+        app:wv_text_color="191,0,0,0"
         />
 </LinearLayout>

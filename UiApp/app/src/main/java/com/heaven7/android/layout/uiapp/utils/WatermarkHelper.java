@@ -39,13 +39,13 @@ public final class WatermarkHelper {
         canvas.drawText(mText + "", this.getWidth() / 4f, this.getHeight() / 4f, mPaint);*/
         // canvas.drawText(mText + "", this.getWidth() / 2f, this.getHeight() / 2f, mPaint);
         canvas.drawText(param.text, mRectF.left, mRectF.top - mPaint.ascent(), mPaint);
-        canvas.restore();
         //多行文字用 StaticLayout
-       /* StaticLayout myStaticLayout = new StaticLayout(mText, mPaint,
+        /*StaticLayout myStaticLayout = new StaticLayout(mText, mPaint,
                 canvas.getWidth() - mGravityPadding,
                 Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
         canvas.translate(getTextX(myStaticLayout.getWidth()), getTextY(myStaticLayout.getHeight()));
-        myStaticLayout.draw(canvas);*/
+        myStaticLayout.draw(canvas); */
+        canvas.restore();
     }
     private static int parseColor(String color){
         if(color.startsWith("#")){
