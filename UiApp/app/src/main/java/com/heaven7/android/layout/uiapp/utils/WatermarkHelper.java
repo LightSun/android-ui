@@ -41,7 +41,7 @@ public final class WatermarkHelper {
         canvas.drawText(param.text, mRectF.left, mRectF.top - mPaint.ascent(), mPaint);
         canvas.restore();
         //多行文字用 StaticLayout
-       /* StaticLayout myStaticLayout = new StaticLayout(mWatermarkText, textPain,
+       /* StaticLayout myStaticLayout = new StaticLayout(mText, mPaint,
                 canvas.getWidth() - mGravityPadding,
                 Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
         canvas.translate(getTextX(myStaticLayout.getWidth()), getTextY(myStaticLayout.getHeight()));
