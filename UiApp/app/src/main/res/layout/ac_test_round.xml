@@ -61,4 +61,19 @@
         />
 -->
 
+    <com.heaven7.android.ui.view.RoundTextView
+        android:id="@+id/tv_approval_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:gravity="center"
+        android:text="请教"
+        android:textColor="#2d8fff"
+        android:textSize="10sp"
+        app:lib_ui_round="8dp"
+        app:lib_ui_round_style="stroke"
+        app:lib_ui_round_border="1px"
+        app:lib_ui_round_border_color="#2d8fff"
+        app:lib_ui_round_afterPadding="false"
+        />
 </LinearLayout>

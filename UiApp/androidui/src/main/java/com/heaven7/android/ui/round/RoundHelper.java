@@ -198,7 +198,7 @@ public final class RoundHelper {
             if(mParams.hasBorder()){
                 mPaint.setColor(mParams.getBorderColor());
                // canvas.save();
-                canvas.drawRoundRect(mRectF,  getRadius(true), getRadius(false), mPaint);
+                canvas.drawRoundRect(mRectF, getRadius(true), getRadius(false), mPaint);
                // canvas.restore();
             }
 
@@ -264,7 +264,19 @@ public final class RoundHelper {
     private void initBorderPaintIfNeed(){
         if(mPaint == null){
             mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            mPaint.setStyle(Paint.Style.FILL);
+            switch (mParams.getStyle()){
+                case RoundParameters.STYLE_STROKE:
+                    mPaint.setStyle(Paint.Style.STROKE);
+                    break;
+                case RoundParameters.STYLE_STROKE_AND_FILL:
+                    mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+                    break;
+
+                default:
+                case RoundParameters.STYLE_FILL:
+                    mPaint.setStyle(Paint.Style.FILL);
+                    break;
+            }
         }
     }
 

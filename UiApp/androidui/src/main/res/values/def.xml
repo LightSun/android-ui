@@ -11,6 +11,11 @@
 
     <attr name="lib_ui_round_circle" format="boolean|reference"/>
     <attr name="lib_ui_round_afterPadding" format="boolean|reference"/>
+    <attr name="lib_ui_round_style" format="enum">
+        <enum name="stroke" value="1"/>
+        <enum name="fill" value="2"/>
+        <enum name="stroke_and_fill" value="3"/>
+    </attr>
 
     <declare-styleable name="RoundDrawable">
         <!-- The wrapped drawable. -->

@@ -14,6 +14,7 @@ import com.heaven7.android.ui.R;
 
     private static final int[] ATTRS = {
             R.attr.lib_ui_round,
+            R.attr.lib_ui_round_style,
             R.attr.lib_ui_round_x,
             R.attr.lib_ui_round_y,
             R.attr.lib_ui_round_border,
@@ -25,6 +26,7 @@ import com.heaven7.android.ui.R;
     };
     private static final int[] ATTRS_ROUND = {
             R.attr.lib_ui_round,
+            R.attr.lib_ui_round_style,
     };
     private static final int[] ATTRS_ROUND_XY = {
             R.attr.lib_ui_round_x,
@@ -131,6 +133,9 @@ import com.heaven7.android.ui.R;
             }
             else if(index == R.attr.lib_ui_round_afterPadding){
                 out.setRoundAfterPadding(ta.getBoolean(idx, drp.isRoundAfterPadding()));
+            }
+            else if(index == R.attr.lib_ui_round_style){
+                out.setStyle(ta.getInt(idx, RoundParameters.STYLE_FILL));
             }
         }
         return indexCount;
