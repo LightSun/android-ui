@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="WatermarkView">
+        <attr name="wv_text" format="string|reference"/>
+        <attr name="wv_text_color" format="string|reference"/>
+        <attr name="wv_text_size" format="dimension|reference"/>
+        <attr name="wv_rotate_degree" format="float|reference"/>
+    </declare-styleable>
+</resources>

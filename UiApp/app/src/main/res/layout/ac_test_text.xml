@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:padding="30dp"
+    android:gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <com.heaven7.android.layout.uiapp.view.WatermarkView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        app:wv_rotate_degree="-20"
+        app:wv_text="中联钢信"
+        app:wv_text_color="#66ff0000"
+        app:wv_text_size="30sp"
+        />
+    <com.heaven7.android.layout.uiapp.view.WatermarkView
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="30dp"
+        app:wv_rotate_degree="30"
+        app:wv_text="中联钢信"
+        app:wv_text_size="30sp"
+        />
+</LinearLayout>
