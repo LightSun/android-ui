@@ -25,15 +25,16 @@
             android:src="@drawable/file_ic_detail_excel" />
 
     </LinearLayout>-->
-
+<!--
     <com.heaven7.android.ui.view.RoundLinearLayout
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:orientation="horizontal"
+        android:background="#fc6600"
         app:lib_ui_round="5dp"
         app:lib_ui_round_border="2dp"
         app:lib_ui_round_border_color="#ff0000"
-        android:padding="1px"
+        android:padding="5dp"
         >
         <View
             android:layout_width="100dp"
@@ -51,6 +52,7 @@
         </FrameLayout>
 
     </com.heaven7.android.ui.view.RoundLinearLayout>
+    -->
 
   <!--  <com.heaven7.android.ui.view.RoundLinearLayout
         android:layout_width="match_parent"
@@ -61,19 +63,33 @@
         />
 -->
 
-    <com.heaven7.android.ui.view.RoundTextView
-        android:id="@+id/tv_approval_type"
+<!--    <com.heaven7.android.ui.view.RoundTextView-->
+<!--        android:id="@+id/tv_approval_type"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:padding="5dp"-->
+<!--        android:gravity="center"-->
+<!--        android:text="请教"-->
+<!--        android:textColor="#2d8fff"-->
+<!--        android:textSize="10sp"-->
+<!--        app:lib_ui_round="8dp"-->
+<!--        app:lib_ui_round_style="stroke"-->
+<!--        app:lib_ui_round_border="1px"-->
+<!--        app:lib_ui_round_border_color="#2d8fff"-->
+<!--        app:lib_ui_round_afterPadding="false"-->
+<!--        />-->
+
+    <com.heaven7.android.layout.uiapp.view.BigTabView
+        android:id="@+id/btv_recognize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:gravity="center"
-        android:text="请教"
-        android:textColor="#2d8fff"
-        android:textSize="10sp"
-        app:lib_ui_round="8dp"
-        app:lib_ui_round_style="stroke"
-        app:lib_ui_round_border="1px"
-        app:lib_ui_round_border_color="#2d8fff"
+        android:paddingTop="15dp"
+        android:paddingBottom="10dp"
+        android:background="#1367db"
         app:lib_ui_round_afterPadding="false"
+        app:lib_ui_round = "2dp"
+        app:btv_title="@string/recognize_scan"
+        app:btv_count_unit="@string/unit_dan"
         />
+
 </LinearLayout>

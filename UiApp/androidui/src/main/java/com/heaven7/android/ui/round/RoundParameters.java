@@ -14,10 +14,10 @@ public class RoundParameters implements Parcelable {
     private float borderWidthX;
     private float borderWidthY;
 
-    private boolean roundAfterPadding = true;
+    private boolean roundAfterPadding = false;
     private int borderColor;
     private boolean circle;
-    private int style; //1, stroke, 2.fill, 3, stroke+fill
+    private int style = STYLE_STROKE; //1, stroke, 2.fill, 3, stroke+fill
 
     public RoundParameters(){}
     public RoundParameters(RoundParameters p){

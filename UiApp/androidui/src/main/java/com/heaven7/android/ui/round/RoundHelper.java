@@ -79,17 +79,6 @@ public final class RoundHelper {
         this.mCallback = callback;
     }
     /**
-     * get the round parameters from known attrs. order is 'attrs -> theme'
-     * @param context the context
-     * @param attrs the attrs. can be null
-     * @param dp the default parameters , can be null.
-     * @return the round parameters. may be null if no attr-value define in theme or attrs And dp is null.
-     */
-    public static RoundParameters of(Context context, @Nullable AttributeSet attrs, RoundParameters dp){
-        return Utils.of(context, attrs, dp);
-    }
-
-    /**
      * get view . may be null if not used from view.
      * @return view
      * @since 1.0.2
@@ -234,6 +223,8 @@ public final class RoundHelper {
         }
         Log.d(TAG, "apply0:  w = " + w + ", h = " + h);
         mPartDelegate.getPadding(mRect);
+        Log.d(TAG, "apply0:  padding = " + mRect);
+
         int padLeft = mRect.left;
         int padTop = mRect.top;
         int padRight = mRect.right;
@@ -243,6 +234,7 @@ public final class RoundHelper {
         if(mParams.isRoundAfterPadding()){
             mRectF.set(padLeft, padTop, w - padRight, h - padBottom);
         }else {
+            Log.d(TAG, "apply0:  isRoundAfterPadding = false");
             mRectF.set(0, 0, w,  h);
         }
         if(mParams.hasBorder()){

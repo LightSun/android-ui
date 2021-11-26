@@ -10,6 +10,7 @@
         <item name="lib_ui_round">10dp</item>
         <item name="lib_ui_round_afterPadding">true</item>
         <item name="lib_ui_round_border_color">#00ff00</item>
+        <item name="lib_ui_round_border">5dp</item>
     </style>
 
     <style name="AppTheme2" parent="AppTheme">

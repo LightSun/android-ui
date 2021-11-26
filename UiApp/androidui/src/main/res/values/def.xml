@@ -29,4 +29,106 @@
         <!-- the calculator used for RoundHelper. this can used to do with animate drawable. -->
         <attr name="calculator" format="string|reference"/>
     </declare-styleable>
+
+    <declare-styleable name="RoundLinearLayout">
+        <attr name="lib_ui_round"/>
+        <attr name="lib_ui_round_x"/>
+        <attr name="lib_ui_round_y"/>
+
+        <attr name="lib_ui_round_border"/>
+        <attr name="lib_ui_round_border_x"/>
+        <attr name="lib_ui_round_border_y"/>
+        <attr name="lib_ui_round_border_color"/>
+
+        <attr name="lib_ui_round_circle"/>
+        <attr name="lib_ui_round_afterPadding"/>
+        <attr name="lib_ui_round_style"/>
+    </declare-styleable>
+
+    <declare-styleable name="RoundTextView">
+        <attr name="lib_ui_round"/>
+        <attr name="lib_ui_round_x"/>
+        <attr name="lib_ui_round_y"/>
+
+        <attr name="lib_ui_round_border"/>
+        <attr name="lib_ui_round_border_x"/>
+        <attr name="lib_ui_round_border_y"/>
+        <attr name="lib_ui_round_border_color"/>
+
+        <attr name="lib_ui_round_circle"/>
+        <attr name="lib_ui_round_afterPadding"/>
+        <attr name="lib_ui_round_style"/>
+    </declare-styleable>
+
+    <declare-styleable name="RoundFrameLayout">
+        <attr name="lib_ui_round"/>
+        <attr name="lib_ui_round_x"/>
+        <attr name="lib_ui_round_y"/>
+
+        <attr name="lib_ui_round_border"/>
+        <attr name="lib_ui_round_border_x"/>
+        <attr name="lib_ui_round_border_y"/>
+        <attr name="lib_ui_round_border_color"/>
+
+        <attr name="lib_ui_round_circle"/>
+        <attr name="lib_ui_round_afterPadding"/>
+        <attr name="lib_ui_round_style"/>
+    </declare-styleable>
+
+    <declare-styleable name="RoundImageView">
+        <attr name="lib_ui_round"/>
+        <attr name="lib_ui_round_x"/>
+        <attr name="lib_ui_round_y"/>
+
+        <attr name="lib_ui_round_border"/>
+        <attr name="lib_ui_round_border_x"/>
+        <attr name="lib_ui_round_border_y"/>
+        <attr name="lib_ui_round_border_color"/>
+
+        <attr name="lib_ui_round_circle"/>
+        <attr name="lib_ui_round_afterPadding"/>
+        <attr name="lib_ui_round_style"/>
+    </declare-styleable>
+    <declare-styleable name="RoundRecyclerView">
+        <attr name="lib_ui_round"/>
+        <attr name="lib_ui_round_x"/>
+        <attr name="lib_ui_round_y"/>
+
+        <attr name="lib_ui_round_border"/>
+        <attr name="lib_ui_round_border_x"/>
+        <attr name="lib_ui_round_border_y"/>
+        <attr name="lib_ui_round_border_color"/>
+
+        <attr name="lib_ui_round_circle"/>
+        <attr name="lib_ui_round_afterPadding"/>
+        <attr name="lib_ui_round_style"/>
+    </declare-styleable>
+    <declare-styleable name="RoundRelativeLayout">
+        <attr name="lib_ui_round"/>
+        <attr name="lib_ui_round_x"/>
+        <attr name="lib_ui_round_y"/>
+
+        <attr name="lib_ui_round_border"/>
+        <attr name="lib_ui_round_border_x"/>
+        <attr name="lib_ui_round_border_y"/>
+        <attr name="lib_ui_round_border_color"/>
+
+        <attr name="lib_ui_round_circle"/>
+        <attr name="lib_ui_round_afterPadding"/>
+        <attr name="lib_ui_round_style"/>
+    </declare-styleable>
+    <declare-styleable name="RoundEditText">
+        <attr name="lib_ui_round"/>
+        <attr name="lib_ui_round_x"/>
+        <attr name="lib_ui_round_y"/>
+
+        <attr name="lib_ui_round_border"/>
+        <attr name="lib_ui_round_border_x"/>
+        <attr name="lib_ui_round_border_y"/>
+        <attr name="lib_ui_round_border_color"/>
+
+        <attr name="lib_ui_round_circle"/>
+        <attr name="lib_ui_round_afterPadding"/>
+        <attr name="lib_ui_round_style"/>
+    </declare-styleable>
 </resources>

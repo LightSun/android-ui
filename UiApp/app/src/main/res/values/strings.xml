@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">UiApp</string>
+    <string name="recognize_scan">扫描识别</string>
+    <string name="unit_dan">单</string>
 </resources>

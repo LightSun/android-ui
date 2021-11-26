@@ -188,9 +188,9 @@ public class RoundDrawable extends Drawable implements RoundAttacher, Drawable.C
         if (mDrawable != null && mDrawable.canApplyTheme()) {
             mDrawable.applyTheme(t);
         }
-        if(mRoundHelper != null){
-            Utils.applyTheme(t, mRoundHelper.getRoundParameters());
-        }
+//        if(mRoundHelper != null){
+//            Utils.applyTheme(t, mRoundHelper.getRoundParameters());
+//        }
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -436,7 +436,7 @@ public class RoundDrawable extends Drawable implements RoundAttacher, Drawable.C
     }
 
     static class State extends ConstantState{
-
+       // int[] mThemeAttrs;
         final RoundHelper mRoundHelper;
         final Drawable base;
 

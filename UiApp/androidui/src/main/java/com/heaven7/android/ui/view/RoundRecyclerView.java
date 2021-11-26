@@ -2,7 +2,9 @@ package com.heaven7.android.ui.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 
@@ -10,8 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.heaven7.android.ui.R;
 import com.heaven7.android.ui.round.RoundHelper;
 import com.heaven7.android.ui.round.RoundAttacher;
+import com.heaven7.android.ui.round.RoundParameters;
 import com.heaven7.android.ui.round.RoundPartDelegate;
 
 /**
@@ -33,7 +37,33 @@ public class RoundRecyclerView extends RecyclerView implements RoundAttacher, Ro
 
     public RoundRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mHelper.setRoundParameters(RoundHelper.of(context, attrs, null));
+        RoundParameters out = new RoundParameters();
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.RoundRecyclerView);
+        try {
+            int val = ta.getDimensionPixelSize(R.styleable.RoundRecyclerView_lib_ui_round, (int) out.getRadiusX());
+            out.setRadiusX(val);
+            out.setRadiusY(val);
+            val = ta.getDimensionPixelSize(R.styleable.RoundRecyclerView_lib_ui_round_x, (int) out.getRadiusX());
+            out.setRadiusX(val);
+            val = ta.getDimensionPixelSize(R.styleable.RoundRecyclerView_lib_ui_round_y, (int) out.getRadiusY());
+            out.setRadiusY(val);
+            val = ta.getDimensionPixelSize(R.styleable.RoundRecyclerView_lib_ui_round_border, (int) out.getBorderWidthX());
+            out.setBorderWidthX(val);
+            out.setBorderWidthY(val);
+            val = ta.getDimensionPixelSize(R.styleable.RoundRecyclerView_lib_ui_round_border_x, (int) out.getBorderWidthX());
+            out.setBorderWidthX(val);
+            val = ta.getDimensionPixelSize(R.styleable.RoundRecyclerView_lib_ui_round_border_y, (int) out.getBorderWidthY());
+            out.setBorderWidthY(val);
+
+            val = ta.getColor(R.styleable.RoundRecyclerView_lib_ui_round_border_color, Color.TRANSPARENT);
+            out.setBorderColor(val);
+            out.setCircle(ta.getBoolean(R.styleable.RoundRecyclerView_lib_ui_round_circle, false));
+            out.setRoundAfterPadding(ta.getBoolean(R.styleable.RoundRecyclerView_lib_ui_round_afterPadding, false));
+            out.setStyle(ta.getInt(R.styleable.RoundRecyclerView_lib_ui_round_style, RoundParameters.STYLE_STROKE));
+        }finally {
+            ta.recycle();
+        }
+        mHelper.setRoundParameters(out);
         mHelper.apply();
     }
 
